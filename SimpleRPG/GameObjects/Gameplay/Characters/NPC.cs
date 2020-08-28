@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.GameObjects.Characters
+﻿namespace SimpleRPG.GameObjects.Characters
 {
     class NPC : Character
     {

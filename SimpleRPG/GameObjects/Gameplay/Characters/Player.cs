@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1.GameObjects.Characters
+namespace SimpleRPG.GameObjects.Characters
 {
     class Player : Character
     {

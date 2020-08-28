@@ -1,43 +1,49 @@
 ﻿Static
 ID=0
 name=wall
-defaultGraphics=▓▓
+graphics=▓▓
+
 isObstacle=false
 end
 
 Static
 ID=1
 name=ground
+graphics=░░
+
 isObstacle=true
-defaultGraphics=░░
 end
 
 Static
 ID=2
 name=road
+graphics=▒▒
+
 isObstacle=true
-defaultGraphics=▒▒
 end
 
 Static
 ID=3
 name=building
+graphics=∏∏
+
 isObstacle=false
-defaultGraphics=∏∏
 end
 
 Static
 ID=4
 name=water
+graphics=≈≈
+
 isObstacle=false
-defaultGraphics=≈≈
 end
 
 Static
 ID=5
 name=building2
+graphics=//
+
 isObstacle=false
-defaultGraphics=//
 end
 
 eof

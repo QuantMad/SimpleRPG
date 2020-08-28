@@ -1,8 +1,8 @@
-﻿using ConsoleApp1.GameObjects.Characters;
+﻿using SimpleRPG.GameObjects.Characters;
 using System;
 using System.Text;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
     class Program
     {

@@ -1,9 +1,8 @@
-﻿using ConsoleApp1.GameObjects.Core;
-using System;
+﻿using SimpleRPG.GameObjects.Core;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
     class GODataBase
     {
@@ -33,24 +32,9 @@ namespace ConsoleApp1
 
         private void LoadStaticObject(StreamReader objectsReader)
         {
-            string line, left, right;
+
             Static newInstance = new Static();
-
-            while ((line = objectsReader.ReadLine()) != "end")
-            {
-                left = line.Split('=')[0];
-                right = line.Split('=')[1];
-
-                switch (left)
-                {
-                    case "ID": newInstance.SetID(int.Parse(right)); break;
-                    case "name": newInstance.SetName(right); break;
-                    case "defaultGraphics": newInstance.SetGraphics(right); break;
-                    case "isObstacle": newInstance.SetIsObstacle(right); break;
-
-                    default: Console.WriteLine(left); break;
-                }
-            }
+            newInstance.Load(objectsReader);
 
             baseStatic.Add(newInstance);
         }

@@ -1,15 +1,51 @@
-﻿using ConsoleApp1.Core;
+﻿using SimpleRPG.Core;
 using System;
+using System.IO;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
     class GameObject
     {
+        // Константа определяющая конец описния объекта
+
+        protected const string END = "end";
+
         private int ID = 0;
+        private string name;
         private string graphics;
         private Point position = new Point(0, 0);
+
         private Room currentRoom;
-        private string name;
+
+        public virtual void Load(StreamReader objectReader)
+        {
+            string currentLine, key, val;
+            int x, y;
+
+            for (int i = 0; i < 4; i++)
+            {
+                currentLine = objectReader.ReadLine();
+
+                if (currentLine.Length > 0)
+                {
+                    key = currentLine.Split('=')[0];
+                    val = currentLine.Split('=')[1];
+
+                    x = val.Contains(':') ? int.Parse(val.Split(':')[0]) : 0;
+                    y = val.Contains(':') ? int.Parse(val.Split(':')[1]) : 0;
+
+                    switch (key)
+                    {
+                        case "ID": SetID(int.Parse(val)); break;
+                        case "name": SetName(val); break;
+                        case "graphics": SetGraphics(val); break;
+                        case "position": SetPosition(x, y); break;
+
+                        default: break;
+                    }
+                }
+            }
+        }
 
         public bool IsObjectAt(int x, int y)
         {
@@ -77,6 +113,8 @@ namespace ConsoleApp1
         {
             return currentRoom;
         }
+
+
 
         public virtual GameObject Clone()
         {

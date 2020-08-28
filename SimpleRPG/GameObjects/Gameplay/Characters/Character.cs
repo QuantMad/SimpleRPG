@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1.GameObjects.Characters
+namespace SimpleRPG.GameObjects.Characters
 {
     class Character : GameObject
     {
@@ -11,6 +11,29 @@ namespace ConsoleApp1.GameObjects.Characters
         const string TYPE_GUARD = "Guard";
 
         private string Role;
+
+        public override void Load(System.IO.StreamReader objectReader)
+        {
+            base.Load(objectReader);
+
+            string currentLine, key, val;
+
+            while ((currentLine = objectReader.ReadLine()) != END)
+            {
+                if (currentLine.Length > 0)
+                {
+                    key = currentLine.Split('=')[0];
+                    val = currentLine.Split('=')[1];
+
+                    switch (key)
+                    {
+                        case "Role": SetRole(val); break;
+
+                        default: break;
+                    }
+                }
+            }
+        }
 
         public virtual void Step(ConsoleKey input)
         {

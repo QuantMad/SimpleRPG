@@ -1,143 +1,141 @@
-﻿using ConsoleApp1.Core;
-using ConsoleApp1.GameObjects.Characters;
-using ConsoleApp1.GameObjects.Core;
+﻿using SimpleRPG.Core;
+using SimpleRPG.GameObjects.Characters;
+using SimpleRPG.GameObjects.Core;
 using System.IO;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
-    class World
+    // TODO: Разделить функционал загрузки из файлов и кнтейнера?
+    // Этот класс является контейнером для комнат. 
+    internal class World
     {
+        // Константа определяющая конец файла
         private const string EOF = "eof";
-        private const string END = "end";
+        // Размер игровой комнаты и игрового мира
+        private const int ROOM_AND_WORLD_SIZE = 32;
+
+        // Хранит ссылку на базу данных статичных объектов
         private readonly GODataBase dataBase;
-        private readonly Room[,] rooms = new Room[32, 32];
+        // Массив комнат
+        private readonly Room[,] rooms = new Room[ROOM_AND_WORLD_SIZE, ROOM_AND_WORLD_SIZE];
+        // Ссылка на игрока
         public Player player;
+        // Путь к папке с комнатами мира
         private readonly string pathWorld;
 
+        /**
+         * Конструктор класса. Принимает путь к директории с файлами комнат, 
+         * и ссылку на объект базы данных статических объектов. 
+         * Заполняет массив комнат пустыми объектами для последующей работы с ними.
+         */
         public World(string pathWorld, GODataBase dataBase)
         {
             this.pathWorld = pathWorld;
             this.dataBase = dataBase;
 
-            for (int y = 0; y < 32; y++)
+            for (int y = 0; y < ROOM_AND_WORLD_SIZE; y++)
             {
-                for (int x = 0; x < 32; x++)
+                for (int x = 0; x < ROOM_AND_WORLD_SIZE; x++)
                 {
                     rooms[y, x] = new Room();
                 }
             }
         }
 
+        /**
+         * Производит пофайловую загрузку комнат и содержащихся в них объектов (NPC, Items, и д.р.)
+         **/
         public void Load()
         {
+            // Хранит список файлов в директории с файлами мира
             string[] files = GetFiles();
+            // Позиция X и Y комнаты в мире
             int RoomX, RoomY;
-            string line;
+            // Хранит текущую считанную из файла строку 
+            string currentLine;
+            // Поток чтения файла 
             StreamReader worldReader;
 
+            // Перебирает файлы в папке, и если файл является файлом описания комнаты, 
+            // то заполняет соответствущую имени файла комнаты ячейку массива rooms[,]
             foreach (string file in files)
             {
                 if (file.Contains("room"))
                 {
                     worldReader = new StreamReader(pathWorld + @"\" + file);
-                    line = file[5..^4];
-                    RoomX = int.Parse(line.Split("_")[0]);
-                    RoomY = int.Parse(line.Split("_")[1]);
+                    // Вычленяет из имени файла координаты комнаты на глобальной карте rooms[,]
+                    RoomX = int.Parse(file[5..^4].Split("_")[0]);
+                    RoomY = int.Parse(file[5..^4].Split("_")[1]);
 
+                    // Выполняет чтение области 32x32 из файла
                     LoadRoom(worldReader, rooms[RoomY, RoomX]);
 
-                    while ((line = worldReader.ReadLine()) != EOF)
+                    // Построчно считывает файл до конца
+                    while ((currentLine = worldReader.ReadLine()) != EOF)
                     {
-                        switch (line)
+                        // Определяет тип загружаемого объекта, и выполняет его загрузку
+                        switch (currentLine)
                         {
                             case "NPC": rooms[RoomY, RoomX].AddNPC(LoadNPC(worldReader)); break;
                             case "TRIGGER": rooms[RoomY, RoomX].AddTrigger(LoadTrigger(worldReader)); break;
+
+                            default: break;
                         }
                     }
 
+                    // Закрывает поток чтения из файла
                     worldReader.Close();
                 }
             }
 
+            // Удаляет пустые комнаты
             CleanRooms();
         }
 
-        private void CleanRooms()
+        /**
+         * Этот метод считывает первые 32 строки файла комнаты, 
+         * и создаёт на их базе карту объектов комнаты
+         **/
+        private void LoadRoom(StreamReader worldReader, Room currentRoom)
         {
-            for (int y = 0; y < 32; y++)
+            int[] parsedLine;
+            for (int y = 0; y < ROOM_AND_WORLD_SIZE; y++)
             {
-                for (int x = 0; x < 32; x++)
+                parsedLine = StringArrayToInt(worldReader.ReadLine().Split(","));
+                for (int x = 0; x < ROOM_AND_WORLD_SIZE; x++)
                 {
-                    if (rooms[y, x].GetParentWorld() == null) rooms[y, x] = null;
+                    currentRoom.SetStaticAt(x, y, dataBase.GetByID(parsedLine[x]).Clone());
                 }
             }
+
+            currentRoom.SetParentWorld(this);
         }
 
+        /**
+         * Загружает блок NPC из потока чтения файла
+         **/
         private NPC LoadNPC(StreamReader worldReader)
         {
-            string line, key, val;
-            NPC newInstant = new NPC();
-            int x, y;
-
-            while ((line = worldReader.ReadLine()) != END)
-            {
-                key = line.Split('=')[0];
-                val = line.Split('=')[1];
-
-                x = val.Contains(':') ? int.Parse(val.Split(':')[0]) : 0;
-                y = val.Contains(':') ? int.Parse(val.Split(':')[1]) : 0;
-
-                switch (key)
-                {
-                    case "ID": newInstant.SetID(int.Parse(val)); break;
-                    case "name": newInstant.SetName(val); break;
-                    case "Class": newInstant.SetRole(val); break;
-                    case "position": newInstant.SetPosition(x, y); break;
-                    case "graphics": newInstant.SetGraphics(val); break;
-
-                    default: break;
-                }
-            }
-
-            return newInstant;
+            NPC newInstance = new NPC();
+            newInstance.Load(worldReader);
+            return newInstance;
         }
 
         private Trigger LoadTrigger(StreamReader worldReader)
         {
-            Trigger newInstant = new Trigger();
+            Trigger newInstance = new Trigger();
+            newInstance.Load(worldReader, this);
 
-            string line, key, val;
-            int x, y;
-
-            while ((line = worldReader.ReadLine()) != END)
-            {
-                key = line.Split("=")[0];
-                val = line.Split("=")[1];
-
-                x = val.Contains(':') ? int.Parse(val.Split(':')[0]) : 0;
-                y = val.Contains(':') ? int.Parse(val.Split(':')[1]) : 0;
-
-                switch (key)
-                {
-                    case "ID": newInstant.SetID(int.Parse(val)); break;
-                    case "name": newInstant.SetName(val); break;
-                    case "graphics": newInstant.SetGraphics(val); break;
-                    case "position": newInstant.SetPosition(x, y); break;
-                    case "remoteRoom": newInstant.SetRemoteRoom(GetRoomAt(x, y)); break;
-                    case "remotePosition": newInstant.SetRemotePosition(x, y); break;
-                }
-            }
-
-            return newInstant;
+            return newInstance;
         }
 
         public string RenderRoom(Room currentRoom)
         {
             string outline = "";
 
-            for (int y = 0; y < 32; y++)
+            for (int y = 0; y < ROOM_AND_WORLD_SIZE; y++)
             {
-                for (int x = 0; x < 32; x++)
+                for (int x = 0; x < ROOM_AND_WORLD_SIZE; x++)
                 {
                     if (player.IsObjectAt(x, y))
                     {
@@ -162,21 +160,6 @@ namespace ConsoleApp1
             return outline;
         }
 
-        private void LoadRoom(StreamReader worldReader, Room currentRoom)
-        {
-            int[] parsedLine;
-            for (int y = 0; y < 32; y++)
-            {
-                parsedLine = StringArrayToInt(worldReader.ReadLine().Split(","));
-                for (int x = 0; x < 32; x++)
-                {
-                    currentRoom.SetStaticAt(x, y, dataBase.GetByID(parsedLine[x]).Clone());
-                }
-            }
-
-            currentRoom.SetParentWorld(this);
-        }
-
         public Room GetRoomAt(Point position)
         {
             return rooms[position.Y, position.X];
@@ -187,16 +170,32 @@ namespace ConsoleApp1
             return ref rooms[y, x];
         }
 
+        /**
+         * Этот метод очищает глобальную карту комнат от пустых комнат. 
+         * Критерием определения пустой комнаты является отсутствие у неё 
+         * родительского объекта World.
+         **/
+        private void CleanRooms()
+        {
+            for (int y = 0; y < ROOM_AND_WORLD_SIZE; y++)
+            {
+                for (int x = 0; x < ROOM_AND_WORLD_SIZE; x++)
+                {
+                    if (rooms[y, x].GetParentWorld() == null) rooms[y, x] = null;
+                }
+            }
+        }
+
         private int[] StringArrayToInt(string[] stringArray)
         {
-            int[] parsed = new int[stringArray.Length];
+            int[] parsedLine = new int[stringArray.Length];
 
             for (int i = 0; i < stringArray.Length; i++)
             {
-                parsed[i] = int.Parse(stringArray[i]);
+                parsedLine[i] = int.Parse(stringArray[i]);
             }
 
-            return parsed;
+            return parsedLine;
         }
 
         private string[] GetFiles()
