@@ -17,7 +17,7 @@ namespace SimpleRPG
 
         private Room currentRoom;
 
-        public virtual void Load(StreamReader objectReader)
+        public virtual void Load(StreamReader objectReader, World currentWorld)
         {
             string currentLine, key, val;
             int x, y;

@@ -9,9 +9,9 @@ namespace SimpleRPG.GameObjects.Core
         private Room remoteRoom;
         private Point remotePosition = new Point(0, 0);
 
-        public void Load(StreamReader objectReader, World currentWorld)
+        public override void Load(StreamReader objectReader, World currentWorld)
         {
-            base.Load(objectReader);
+            base.Load(objectReader, currentWorld);
 
             string currentLine, key, val;
             int x, y;

@@ -76,8 +76,8 @@ namespace SimpleRPG
                         // Определяет тип загружаемого объекта, и выполняет его загрузку
                         switch (currentLine)
                         {
-                            case "NPC": rooms[RoomY, RoomX].AddNPC(LoadNPC(worldReader)); break;
-                            case "TRIGGER": rooms[RoomY, RoomX].AddTrigger(LoadTrigger(worldReader)); break;
+                            case "NPC": rooms[RoomY, RoomX].AddNPC(LoadObject<NPC>(worldReader)); break;
+                            case "TRIGGER": rooms[RoomY, RoomX].AddTrigger(LoadObject<Trigger>(worldReader)); break;
 
                             default: break;
                         }
@@ -111,21 +111,10 @@ namespace SimpleRPG
             currentRoom.SetParentWorld(this);
         }
 
-        /**
-         * Загружает блок NPC из потока чтения файла
-         **/
-        private NPC LoadNPC(StreamReader worldReader)
+        private T LoadObject<T>(StreamReader objectReader) where T : GameObject, new()
         {
-            NPC newInstance = new NPC();
-            newInstance.Load(worldReader);
-            return newInstance;
-        }
-
-        private Trigger LoadTrigger(StreamReader worldReader)
-        {
-            Trigger newInstance = new Trigger();
-            newInstance.Load(worldReader, this);
-
+            T newInstance = new T();
+            newInstance.Load(objectReader, this);
             return newInstance;
         }
 

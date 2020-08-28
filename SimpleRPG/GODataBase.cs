@@ -34,7 +34,7 @@ namespace SimpleRPG
         {
 
             Static newInstance = new Static();
-            newInstance.Load(objectsReader);
+            newInstance.Load(objectsReader, null);
 
             baseStatic.Add(newInstance);
         }

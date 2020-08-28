@@ -6,9 +6,9 @@ namespace SimpleRPG.GameObjects.Core
     {
         private bool isObstacle;
 
-        public override void Load(StreamReader objectReader)
+        public override void Load(StreamReader objectReader, World currentWorld)
         {
-            base.Load(objectReader);
+            base.Load(objectReader, currentWorld);
             string currentLine, key, val;
 
             while ((currentLine = objectReader.ReadLine()) != END)

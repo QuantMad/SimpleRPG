@@ -12,9 +12,9 @@ namespace SimpleRPG.GameObjects.Characters
 
         private string Role;
 
-        public override void Load(System.IO.StreamReader objectReader)
+        public override void Load(System.IO.StreamReader objectReader, World currentWorld)
         {
-            base.Load(objectReader);
+            base.Load(objectReader, currentWorld);
 
             string currentLine, key, val;
 

@@ -64,6 +64,7 @@ namespace SimpleRPG
 
         public void AddTrigger(Trigger newTrigger)
         {
+            newTrigger.SetCurrentRoom(this);
             listTriggers.Add(newTrigger);
         }
 
