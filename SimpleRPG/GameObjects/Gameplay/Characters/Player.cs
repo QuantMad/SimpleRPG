@@ -9,6 +9,7 @@ namespace SimpleRPG.GameObjects.Characters
             SetGraphics("██");
         }
 
+        // Нужно
         public override void Step(ConsoleKey input)
         {
             switch (input)

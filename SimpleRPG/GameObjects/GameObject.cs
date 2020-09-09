@@ -7,16 +7,22 @@ namespace SimpleRPG
     class GameObject
     {
         // Константа определяющая конец описния объекта
-
         protected const string END = "end";
 
+        /**
+         * Базовые поля, пресущие любому игрвому объекту
+         **/
         private int ID = 0;
         private string name;
         private string graphics;
-        private Point position = new Point(0, 0);
+        private Point position = new Point(0, 0); // Сделать readonly?
 
         private Room currentRoom;
 
+        /**
+         * Базовый метод загрузки объекта их птока objectReader
+         * TODO: currentWorld - костыль. Исправить. 
+         **/
         public virtual void Load(StreamReader objectReader, World currentWorld)
         {
             string currentLine, key, val;
