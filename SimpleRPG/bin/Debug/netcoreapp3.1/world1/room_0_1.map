@@ -34,19 +34,21 @@
 TRIGGER
 ID=0
 name=Top trigger to left room
+graphics=← 
 position=0:11
+
 remoteRoom=0:0
 remotePosition=31:11
-graphics=← 
 end
 
 TRIGGER
 ID=1
 name=Bottom trigger to left room
+graphics=← 
 position=0:24
+
 remoteRoom=0:0
 remotePosition=31:24
-graphics=← 
 end
 
 eof

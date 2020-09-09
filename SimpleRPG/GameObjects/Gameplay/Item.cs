@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.GameObjects.Core
+﻿namespace SimpleRPG.GameObjects.Core
 {
     class Item : GameObject
     {

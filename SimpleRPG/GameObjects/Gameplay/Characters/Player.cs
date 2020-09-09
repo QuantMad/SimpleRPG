@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp1.GameObjects.Characters
+namespace SimpleRPG.GameObjects.Characters
 {
     class Player : Character
     {
@@ -9,6 +9,7 @@ namespace ConsoleApp1.GameObjects.Characters
             SetGraphics("██");
         }
 
+        // Нужно
         public override void Step(ConsoleKey input)
         {
             switch (input)

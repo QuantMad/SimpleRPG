@@ -1,23 +1,27 @@
-﻿using ConsoleApp1.GameObjects.Core;
-using System;
+﻿using SimpleRPG.GameObjects.Core;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
+    /*
+     * Этот класс представляет собой базу данных заготовленных объектов. 
+     * Считывание объектов (на данный момент лишь статических) производится из файла pathDBStatic
+     **/
     class GODataBase
     {
-        const string EOF = "eof";
+        const string EOF = "eof"; // Строка знаменующая конец файла
 
-        string pathDBStatic = "GODBStatic.godb";
+        string pathDBStatic = "GODBStatic.godb"; // Путь к файлу
 
-        public List<Static> baseStatic = new List<Static>();
+        public List<Static> baseStatic = new List<Static>(); // Список объектов
 
         public void Load()
         {
             LoadStatic();
         }
 
+        // Этот метод загружает все статические объекты из файла
         private void LoadStatic()
         {
             StreamReader objectsReader = new StreamReader(pathDBStatic);
@@ -31,30 +35,18 @@ namespace ConsoleApp1
             objectsReader.Close();
         }
 
+        // Этот метод загружает один статический объект из открытого потока чтения файла,
+        // И добавляет его в список статических объектов
         private void LoadStaticObject(StreamReader objectsReader)
         {
-            string line, left, right;
             Static newInstance = new Static();
-
-            while ((line = objectsReader.ReadLine()) != "end")
-            {
-                left = line.Split('=')[0];
-                right = line.Split('=')[1];
-
-                switch (left)
-                {
-                    case "ID": newInstance.SetID(int.Parse(right)); break;
-                    case "name": newInstance.SetName(right); break;
-                    case "defaultGraphics": newInstance.SetGraphics(right); break;
-                    case "isObstacle": newInstance.SetIsObstacle(right); break;
-
-                    default: Console.WriteLine(left); break;
-                }
-            }
+            newInstance.Load(objectsReader, null);
 
             baseStatic.Add(newInstance);
         }
 
+        // Возвращает ссылку на объект из списка по его ID (Применять осторожно).
+        // Если объект с ID не был найден возвращает null
         public Static GetByID(int ID)
         {
             foreach (Static obj in baseStatic)
@@ -65,6 +57,10 @@ namespace ConsoleApp1
             return null;
         }
 
+        // Клонирует объект из списка по его ID
+        //
+        // ОПАСНО: Может вызвать NullPointerException! 
+        // Отработать исключение.
         public Static CloneByID(int ID)
         {
             return GetByID(ID).Clone();

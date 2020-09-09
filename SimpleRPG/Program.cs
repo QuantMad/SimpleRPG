@@ -1,8 +1,8 @@
-﻿using ConsoleApp1.GameObjects.Characters;
+﻿using SimpleRPG.GameObjects.Characters;
 using System;
 using System.Text;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
     class Program
     {
@@ -29,14 +29,18 @@ namespace ConsoleApp1
             mainWorld.player.SetPosition(30, 11);
 
             ConsoleKey input;
+            string outline;
 
             while ((input = Console.ReadKey().Key) != ConsoleKey.Q)
             {
                 mainWorld.player.Step(input);
+                outline = mainWorld.RenderRoom(mainWorld.player.GetCurrentRoom());
 
                 Console.Clear();
-                Console.WriteLine(mainWorld.RenderRoom(mainWorld.player.GetCurrentRoom()));
-                Console.WriteLine(mainWorld.player.GetPosition().X + " | " + mainWorld.player.GetPosition().Y);
+                Console.WriteLine(outline);
+
+                //выводит координаты игрока
+                //Console.WriteLine(mainWorld.player.GetPosition().X + " | " + mainWorld.player.GetPosition().Y);
             }
         }
     }

@@ -34,10 +34,11 @@
 TRIGGER
 ID=1
 name=Top trigget to top room
+graphics= ↑
 position=13:0
+
 remoteRoom=0:0
 remotePosition=13:31
-graphics= ↑
 end
 
 eof

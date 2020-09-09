@@ -1,9 +1,9 @@
-﻿using ConsoleApp1.Core;
-using ConsoleApp1.GameObjects.Characters;
-using ConsoleApp1.GameObjects.Core;
+﻿using SimpleRPG.Core;
+using SimpleRPG.GameObjects.Characters;
+using SimpleRPG.GameObjects.Core;
 using System.Collections.Generic;
 
-namespace ConsoleApp1
+namespace SimpleRPG
 {
     class Room
     {
@@ -64,6 +64,7 @@ namespace ConsoleApp1
 
         public void AddTrigger(Trigger newTrigger)
         {
+            newTrigger.SetCurrentRoom(this);
             listTriggers.Add(newTrigger);
         }
 
