@@ -104,7 +104,7 @@ namespace SimpleRPG
                 parsedLine = StringArrayToInt(worldReader.ReadLine().Split(","));
                 for (int x = 0; x < ROOM_AND_WORLD_SIZE; x++)
                 {
-                    currentRoom.SetStaticAt(x, y, dataBase.GetByID(parsedLine[x]).Clone());
+                    currentRoom.SetStaticAt(x, y, dataBase.GetByID(parsedLine[x]));
                 }
             }
 
@@ -118,6 +118,37 @@ namespace SimpleRPG
             return newInstance;
         }
 
+        public string[,] BuildRoomImage(Room currentRoom)
+        {
+            string[,] currentImage = new string[32, 32];
+
+            for (int y = 0; y < 32; y++)
+            {
+                for (int x = 0; x < 32; x++)
+                {
+                    if (player.IsObjectAt(x, y))
+                    {
+                        currentImage[y, x] = player.GetGraphics();
+                    }
+                    else if (currentRoom.IsAnyTriggerAt(x, y))
+                    {
+                        currentImage[y, x] = currentRoom.GetTriggerAt(x, y).GetGraphics();
+                    }
+                    else if (currentRoom.IsAnyNPCAt(x, y))
+                    {
+                        currentImage[y, x] = currentRoom.GetNPCAt(x, y).GetGraphics();
+                    }
+                    else
+                    {
+                        currentImage[y, x] = currentRoom.GetStaticAt(x, y).GetGraphics();
+                    }
+                }
+            }
+
+            return currentImage;
+        }
+
+        // Legacy
         public string RenderRoom(Room currentRoom)
         {
             string outline = "";
