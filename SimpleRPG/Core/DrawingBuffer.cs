@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Text;
 
 namespace SimpleRPG.Core
 {
@@ -8,7 +8,21 @@ namespace SimpleRPG.Core
         public const int WIDTH = 64;
         public const int HEIGHT = 32;
 
-        string[,] screenBuffer = new string[HEIGHT, WIDTH];
+        private readonly StringBuilder[,] screenBuffer = new StringBuilder[HEIGHT, WIDTH];
+        private readonly StringBuilder outLine = new StringBuilder();
+
+        public DrawingBuffer()
+        {
+            for (int y = 0; y < screenBuffer.GetLength(0); y++)
+            {
+                for (int x = 0; x < screenBuffer.GetLength(1); x++)
+                {
+                    screenBuffer[y, x] = new StringBuilder();
+                }
+            }
+
+            Clear();
+        }
 
         public void Clear()
         {
@@ -16,25 +30,25 @@ namespace SimpleRPG.Core
             {
                 for (int x = 0; x < screenBuffer.GetLength(1); x++)
                 {
-                    screenBuffer[y, x] = "__";
+                    screenBuffer[y, x].Clear();
+                    screenBuffer[y, x].Append("__");
                 }
             }
+            outLine.Clear();
         }
 
         public string Render()
         {
-            string outLine = "";
-
             for (int y = 0; y < screenBuffer.GetLength(0); y++)
             {
                 for (int x = 0; x < screenBuffer.GetLength(1); x++)
                 {
-                    outLine += screenBuffer[y, x];
+                    _ = outLine.Append(screenBuffer[y, x]);
                 }
-                outLine += "\n";
+                outLine.Append("\n");
             }
 
-            return outLine;
+            return outLine.ToString();
         }
 
         public void DrawTextAt(string text, int x, int y)
@@ -43,50 +57,47 @@ namespace SimpleRPG.Core
 
             string[] line = new string[_text.Length / 2];
 
-            Regex regular = new Regex(".{0,2}", RegexOptions.Singleline);
-            MatchCollection matches = regular.Matches(_text);
-
-            int i = 0;
-            foreach (Match match in matches)
+            for (int i = 0; i < _text.Length; i++)
             {
-                if (i < line.Length) // Костыль. Переработать
+                if (i % 2 != 0)
                 {
-                    line[i++] = match.Value;
+                    line[i / 2] = _text[i - 1].ToString() + _text[i].ToString();
                 }
             }
 
             DrawAreaAt(line, x, y);
         }
 
-        public void DrawElementAt(string symbol, int x, int y)
+        public void DrawElementAt(string element, int x, int y)
         {
             CheckCoordinatesAvalability(x, y);
 
-            screenBuffer[y, x] = symbol;
+            screenBuffer[y, x].Clear();
+            screenBuffer[y, x].Append(element);
         }
 
-        public void DrawAreaAt(string[,] array, int x, int y)
+        public void DrawAreaAt(string[,] area, int x, int y)
         {
             CheckCoordinatesAvalability(x, y);
-            CheckAreaAvalability(array, x, y);
+            CheckAreaAvalability(area, x, y);
 
-            for (int _y = 0; _y < array.GetLength(0); _y++)
+            for (int _y = 0; _y < area.GetLength(0); _y++)
             {
-                for (int _x = 0; _x < array.GetLength(1); _x++)
+                for (int _x = 0; _x < area.GetLength(1); _x++)
                 {
-                    screenBuffer[y + _y, x + _x] = array[_y, _x];
+                    DrawElementAt(area[_y, _x], x + _x, y + _y);
                 }
             }
         }
 
-        public void DrawAreaAt(string[] array, int x, int y)
+        public void DrawAreaAt(string[] area, int x, int y)
         {
             CheckCoordinatesAvalability(x, y);
-            CheckAreaAvalability(array, x, y);
+            CheckAreaAvalability(area, x, y);
 
-            for (int _x = 0; _x < array.Length; _x++)
+            for (int _x = 0; _x < area.Length; _x++)
             {
-                screenBuffer[y, x + _x] = array[_x];
+                DrawElementAt(area[_x], x + _x, y);
             }
 
         }

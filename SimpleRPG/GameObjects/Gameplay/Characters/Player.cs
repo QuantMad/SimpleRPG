@@ -7,6 +7,7 @@ namespace SimpleRPG.GameObjects.Characters
         public Player()
         {
             SetGraphics("██");
+            SetName("Vasilek");
         }
 
         // Нужно

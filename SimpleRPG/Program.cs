@@ -32,23 +32,21 @@ namespace SimpleRPG
             mainWorld.player.SetPosition(30, 11);
 
             ConsoleKey input;
-            //string outline;
+
 
             while ((input = Console.ReadKey().Key) != ConsoleKey.Q)
             {
-                mainBuffer.Clear();
                 mainWorld.player.Step(input);
 
-                //outline = mainWorld.RenderRoom(mainWorld.player.GetCurrentRoom());
-                mainBuffer.DrawElementAt("XX", 2, 2);
+                mainBuffer.Clear();
                 mainBuffer.DrawAreaAt(mainWorld.BuildRoomImage(mainWorld.player.GetCurrentRoom()), 0, 0);
-                mainBuffer.DrawTextAt("test", 34, 2);
+
+                mainBuffer.DrawTextAt("Name: " + mainWorld.player.GetName(), 35, 2);
+                mainBuffer.DrawTextAt("Position X: " + mainWorld.player.GetPosition().X, 35, 3);
+                mainBuffer.DrawTextAt("Position Y: " + mainWorld.player.GetPosition().Y, 35, 4);
 
                 Console.Clear();
-                Console.WriteLine(mainBuffer.Render());
-
-                //выводит координаты игрока
-                //Console.WriteLine(mainWorld.player.GetPosition().X + " | " + mainWorld.player.GetPosition().Y);
+                Console.WriteLine(mainBuffer.Render()); ;
             }
         }
     }

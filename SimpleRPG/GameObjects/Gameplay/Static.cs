@@ -6,6 +6,11 @@ namespace SimpleRPG.GameObjects.Core
     {
         private bool isObstacle;
 
+        public Static()
+        {
+            drawingPriority = DRAWING_PRIORITY_STATIC;
+        }
+
         public override void Load(StreamReader objectReader, World currentWorld)
         {
             base.Load(objectReader, currentWorld);

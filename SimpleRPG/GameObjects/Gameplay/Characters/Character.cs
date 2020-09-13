@@ -12,6 +12,11 @@ namespace SimpleRPG.GameObjects.Characters
         //       Сделать доавление новых классов простым в реализации
         private string role;
 
+        public Character()
+        {
+            drawingPriority = DRAWING_PRIORITY_CHARACTER;
+        }
+
         public override void Load(System.IO.StreamReader objectReader, World currentWorld)
         {
             base.Load(objectReader, currentWorld);

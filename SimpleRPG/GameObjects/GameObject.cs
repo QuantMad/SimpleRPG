@@ -1,13 +1,20 @@
 ﻿using SimpleRPG.Core;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace SimpleRPG
 {
-    class GameObject
+    class GameObject : IDrawable, IComparer<int>
     {
         // Константа определяющая конец описния объекта
         protected const string END = "end";
+
+        protected const int DRAWING_PRIORITY_STATIC = 0;
+        protected const int DRAWING_PRIORITY_ITEM = 1;
+        protected const int DRAWING_PRIORITY_TRIGGER = 2;
+        protected const int DRAWING_PRIORITY_CHARACTER = 3;
 
         /**
          * Базовые поля, пресущие любому игрвому объекту
@@ -16,6 +23,7 @@ namespace SimpleRPG
         private string name;
         private string graphics;
         private Point position = new Point(0, 0); // Сделать readonly?
+        protected int drawingPriority = -1;
 
         private Room currentRoom;
 
@@ -121,7 +129,6 @@ namespace SimpleRPG
         }
 
 
-
         public virtual GameObject Clone()
         {
             GameObject newObject = CreateCloneBase();
@@ -138,6 +145,16 @@ namespace SimpleRPG
         protected virtual GameObject CreateCloneBase()
         {
             return new GameObject();
+        }
+
+        public int GetDrawingPriority()
+        {
+            return drawingPriority;
+        }
+
+        public int Compare([AllowNull] int x, [AllowNull] int y)
+        {
+            return x > y ? x : y;
         }
     }
 }

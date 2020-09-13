@@ -9,6 +9,11 @@ namespace SimpleRPG.GameObjects.Core
         private Room remoteRoom;
         private Point remotePosition = new Point(0, 0);
 
+        public Trigger()
+        {
+            drawingPriority = DRAWING_PRIORITY_TRIGGER;
+        }
+
         public override void Load(StreamReader objectReader, World currentWorld)
         {
             base.Load(objectReader, currentWorld);
