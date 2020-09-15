@@ -18,9 +18,9 @@ namespace SimpleRPG
         public void Run()
         {
             dataBase = new GODataBase("GODataBase.db");
-            dataBase.Connect();
+            //dataBase.Connect();
 
-            dataBase.GetObjectByID(2);
+            //dataBase.GetObjectByID(2);
 
             /*ConsoleKey input;
 
