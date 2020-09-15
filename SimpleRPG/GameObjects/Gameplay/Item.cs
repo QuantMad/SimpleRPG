@@ -4,7 +4,7 @@
     {
         public Item()
         {
-            drawingPriority = DRAWING_PRIORITY_ITEM;
+
         }
     }
 }

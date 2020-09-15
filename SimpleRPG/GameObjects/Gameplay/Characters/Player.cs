@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleRPG.Core;
+using System;
 
 namespace SimpleRPG.GameObjects.Characters
 {
@@ -6,14 +7,14 @@ namespace SimpleRPG.GameObjects.Characters
     {
         public Player()
         {
-            SetGraphics("██");
-            SetName("Vasilek");
+            Graphics = new Chank("██");
+            Name = "Vasilek";
         }
 
         // Нужно
         public override void Step(ConsoleKey input)
         {
-            switch (input)
+            /*switch (input)
             {
                 case ConsoleKey.D: MoveRelative(0, 1); break;
                 case ConsoleKey.A: MoveRelative(0, -1); break;
@@ -25,7 +26,7 @@ namespace SimpleRPG.GameObjects.Characters
                         GetCurrentRoom().GetTriggerAt(GetPosition()).Activate(this);
                     }
                     break;
-            }
+            }*/
         }
 
         //private Inventory inventory; // TODO

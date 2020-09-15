@@ -5,7 +5,17 @@
     public class Point
     {
         // Переменные координат
-        public int X, Y;
+        public int X
+        {
+            get => X;
+            set => X = value;
+        }
+
+        public int Y
+        {
+            get => Y;
+            set => Y = value;
+        }
 
         // Конструктор без определения координат
         public Point()

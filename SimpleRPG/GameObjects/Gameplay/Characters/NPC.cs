@@ -1,12 +1,14 @@
-﻿namespace SimpleRPG.GameObjects.Characters
+﻿using SimpleRPG.Core;
+
+namespace SimpleRPG.GameObjects.Characters
 {
     class NPC : Character
     {
-        const string DEFAULT_GRAPHICS = "☺ ";
+        private static readonly Chank DEFAULT_GRAPHICS = new Chank("☺ ");
 
         public NPC()
         {
-            SetGraphics(DEFAULT_GRAPHICS);
+            Graphics = DEFAULT_GRAPHICS;
         }
 
         //private Inventory inventory; // TODO

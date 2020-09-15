@@ -8,47 +8,39 @@ namespace SimpleRPG.Core
         public const int WIDTH = 64;
         public const int HEIGHT = 32;
 
-        private readonly StringBuilder[,] screenBuffer = new StringBuilder[HEIGHT, WIDTH];
+        private readonly Chank[,] screenBuffer = new Chank[HEIGHT, WIDTH];
         private readonly StringBuilder outLine = new StringBuilder();
 
         public DrawingBuffer()
         {
+            outLine.Capacity = screenBuffer.GetLength(0) * screenBuffer.GetLength(1);
+
             for (int y = 0; y < screenBuffer.GetLength(0); y++)
             {
                 for (int x = 0; x < screenBuffer.GetLength(1); x++)
                 {
-                    screenBuffer[y, x] = new StringBuilder();
+                    screenBuffer[y, x] = new Chank();
                 }
             }
-
-            Clear();
         }
 
         public void Clear()
         {
-            for (int y = 0; y < screenBuffer.GetLength(0); y++)
-            {
-                for (int x = 0; x < screenBuffer.GetLength(1); x++)
-                {
-                    screenBuffer[y, x].Clear();
-                    screenBuffer[y, x].Append("__");
-                }
-            }
-            outLine.Clear();
+
         }
 
-        public string Render()
+        public void Render()
         {
-            for (int y = 0; y < screenBuffer.GetLength(0); y++)
+            for (int y = 0; y < 32; y++)
             {
-                for (int x = 0; x < screenBuffer.GetLength(1); x++)
+                for (int x = 0; x < 64; x++)
                 {
-                    _ = outLine.Append(screenBuffer[y, x]);
+                    outLine.Append(screenBuffer[y, x]);
                 }
-                outLine.Append("\n");
+                outLine.Append('\n');
             }
 
-            return outLine.ToString();
+            Console.Write(outLine);
         }
 
         public void DrawTextAt(string text, int x, int y)
@@ -70,17 +62,11 @@ namespace SimpleRPG.Core
 
         public void DrawElementAt(string element, int x, int y)
         {
-            CheckCoordinatesAvalability(x, y);
-
-            screenBuffer[y, x].Clear();
-            screenBuffer[y, x].Append(element);
+            screenBuffer[y, x].Set(element);
         }
 
         public void DrawAreaAt(string[,] area, int x, int y)
         {
-            CheckCoordinatesAvalability(x, y);
-            CheckAreaAvalability(area, x, y);
-
             for (int _y = 0; _y < area.GetLength(0); _y++)
             {
                 for (int _x = 0; _x < area.GetLength(1); _x++)
@@ -92,41 +78,11 @@ namespace SimpleRPG.Core
 
         public void DrawAreaAt(string[] area, int x, int y)
         {
-            CheckCoordinatesAvalability(x, y);
-            CheckAreaAvalability(area, x, y);
-
             for (int _x = 0; _x < area.Length; _x++)
             {
                 DrawElementAt(area[_x], x + _x, y);
             }
 
-        }
-
-        private void CheckCoordinatesAvalability(int x, int y)
-        {
-            if (x > screenBuffer.GetLength(1) ||
-                y > screenBuffer.GetLength(0) ||
-                x < 0 || y < 0)
-            {
-                throw new IndexOutOfRangeException("Area coordinates out of screen buffer limits.");
-            }
-        }
-
-        private void CheckAreaAvalability(string[,] area, int x, int y)
-        {
-            if (x + area.GetLength(1) > screenBuffer.GetLength(1) ||
-                y + area.GetLength(0) > screenBuffer.GetLength(0))
-            {
-                throw new IndexOutOfRangeException("The area is outside the screen buffer.");
-            }
-        }
-
-        private void CheckAreaAvalability(string[] area, int x, int y)
-        {
-            if (x + area.Length > screenBuffer.GetLength(1))
-            {
-                throw new IndexOutOfRangeException("The area is outside the screen buffer.");
-            }
         }
     }
 }
