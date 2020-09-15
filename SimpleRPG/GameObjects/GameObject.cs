@@ -1,4 +1,6 @@
 ﻿using SimpleRPG.Core;
+using System;
+using System.Data.SQLite;
 
 namespace SimpleRPG
 {
@@ -6,19 +8,25 @@ namespace SimpleRPG
     {
         private Room currentRoom;
 
-        private int ID = 0;
         public readonly Point position = new Point(0, 0);
 
-        public string Name
+        public int ID { get; private set; }
+
+        public string Name { get; protected set; }
+
+        public Chank Graphics { get; protected set; }
+
+        public GameObject()
         {
-            get => Name;
-            set => Name = value;
+            Graphics = new Chank("XX");
         }
 
-        public Chank Graphics
+        public virtual void Load(SQLiteDataReader dataReader)
         {
-            get => Graphics;
-            set => Graphics = value;
+            ID = Convert.ToInt32(dataReader.GetInt64(0));
+            Name = dataReader.GetString(1);
+            string s = dataReader.GetString(2);
+            Graphics.Set(dataReader.GetString(2));
         }
 
         public bool IsObjectAt(int x, int y)

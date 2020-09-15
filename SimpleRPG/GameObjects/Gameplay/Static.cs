@@ -1,11 +1,19 @@
-﻿namespace SimpleRPG.GameObjects.Core
+﻿using System.Data.SQLite;
+
+namespace SimpleRPG.GameObjects.Core
 {
     class Static : GameObject
     {
         public bool IsObstacle
         {
-            get { return IsObstacle; }
-            set { IsObstacle = value; }
+            get; protected set;
+        }
+
+        public override void Load(SQLiteDataReader dataReader)
+        {
+            base.Load(dataReader);
+
+            IsObstacle = bool.Parse(dataReader.GetString(3));
         }
 
         public new Static Clone()

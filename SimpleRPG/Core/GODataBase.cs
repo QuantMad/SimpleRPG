@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SimpleRPG.GameObjects.Core;
+using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 
 namespace SimpleRPG
@@ -7,59 +9,80 @@ namespace SimpleRPG
     {
         SQLiteConnection connectionDataBase;
         SQLiteCommand commandRequest;
-        SQLiteDataReader dataReader;
+
+        Dictionary<int, Static> dbStatic = new Dictionary<int, Static>();
 
         public GODataBase(string pathDB)
         {
             connectionDataBase = new SQLiteConnection("Data Source=" + pathDB);
             Connect();
-
-
         }
 
         public void Connect()
         {
             connectionDataBase.Open();
             commandRequest = connectionDataBase.CreateCommand();
-            commandRequest.CommandText = @"SELECT * FROM Static WHERE ID = $id";
-            commandRequest.Parameters.AddWithValue("$id", 2);
-            dataReader = commandRequest.ExecuteReader();
-            dataReader.Read();
 
-            Console.WriteLine("FieldCount: " + dataReader.FieldCount);
-            Console.WriteLine("HasRows: " + dataReader.HasRows);
-            Console.WriteLine();
+            LoadObjects(commandRequest, dbStatic); // Ахуительно. Бегом пуш пока не проёб
 
-            Console.WriteLine("GO class: Static");
-            for (int i = 0; i < dataReader.FieldCount; i++)
+            commandRequest.Cancel();
+            connectionDataBase.Close();
+
+            foreach (KeyValuePair<int, Static> s in dbStatic)
             {
-                Console.WriteLine(dataReader.GetOriginalName(i) + " = " + dataReader.GetValue(i));
+                Console.WriteLine(s.Value.ID);
+                Console.WriteLine(s.Value.Name);
+                Console.WriteLine(s.Value.Graphics);
+                Console.WriteLine(s.Value.IsObstacle);
+                Console.WriteLine();
+            }
+        }
+
+        private void LoadObjects<T>(
+            SQLiteCommand commandRequest,
+            Dictionary<int, T> dbGameObjects) where T : GameObject, new()
+        {
+            SQLiteDataReader dataReader;
+            string typeName = typeof(T).Name.ToString();
+            T newInstance;
+
+            RequestObjectType(typeName);
+            int recordsCount = GetTableSize(typeName);
+
+            for (int i = 1; i < recordsCount; i++)
+            {
+                commandRequest.Parameters.AddWithValue("$id", i);
+                dataReader = commandRequest.ExecuteReader();
+
+                dataReader.Read();
+                newInstance = LoadObject<T>(dataReader);
+                dbGameObjects.Add(newInstance.ID, newInstance);
+                dataReader.Close();
             }
 
+            commandRequest.Parameters.Clear();
         }
 
-        private SQLiteDataReader GetProperty(string propertyName, int id)
+        private int GetTableSize(string table)
         {
-            _ = commandRequest.Parameters.AddWithValue("$id", id);
-            commandRequest.CommandText = @"SELECT " + propertyName + " FROM Static WHERE ID = $id";
-            dataReader = commandRequest.ExecuteReader();
+            SQLiteCommand comm = connectionDataBase.CreateCommand();
+            comm.CommandText = @"SELECT COUNT(*) FROM Static";
+            int tableSize = int.Parse(comm.ExecuteScalar().ToString()) + 1;
+            comm.Cancel();
 
-            dataReader.Read();
-            /*string s = dataReader.GetString(0);
-            dataReader.Close();
-
-            commandRequest.Parameters.Clear();*/
-
-            return dataReader;
+            return tableSize;
         }
 
-        public GameObject GetObjectByID(int id)
+        private void RequestObjectType(string type)
         {
-            Console.WriteLine(GetProperty("Name", id));
-            Console.WriteLine(GetProperty("Graphics", id));
-            Console.WriteLine(GetProperty("isObstacle", id));
+            commandRequest.CommandText = @"SELECT * FROM " + type + " WHERE ID = $id";
+        }
 
-            return null;
+        private T LoadObject<T>(SQLiteDataReader dataReader) where T : GameObject, new()
+        {
+            T newInstance = new T();
+            newInstance.Load(dataReader);
+            return newInstance;
         }
     }
 }
