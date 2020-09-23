@@ -8,47 +8,81 @@ namespace SimpleRPG.Core
         public const int WIDTH = 64;
         public const int HEIGHT = 32;
 
-        private readonly StringBuilder[,] screenBuffer = new StringBuilder[HEIGHT, WIDTH];
-        private readonly StringBuilder outLine = new StringBuilder();
+        private readonly StringBuilder[,] firstBuffer = new StringBuilder[HEIGHT, WIDTH];
+        private readonly StringBuilder[,] secondBuffer = new StringBuilder[HEIGHT, WIDTH];
+        private StringBuilder[,] currentBuffer;
 
         public DrawingBuffer()
         {
-            for (int y = 0; y < screenBuffer.GetLength(0); y++)
+            Console.CursorVisible = false;
+            currentBuffer = firstBuffer;
+            for (int y = 0; y < firstBuffer.GetLength(0); y++)
             {
-                for (int x = 0; x < screenBuffer.GetLength(1); x++)
+                for (int x = 0; x < firstBuffer.GetLength(1); x++)
                 {
-                    screenBuffer[y, x] = new StringBuilder();
+                    firstBuffer[y, x] = new StringBuilder();
                 }
             }
 
-            Clear();
+            for (int y = 0; y < secondBuffer.GetLength(0); y++)
+            {
+                for (int x = 0; x < secondBuffer.GetLength(1); x++)
+                {
+                    secondBuffer[y, x] = new StringBuilder();
+                }
+            }
+
+            Clear(firstBuffer);
+            Clear(secondBuffer);
+        }
+
+        public void Clear(StringBuilder[,] buffer)
+        {
+            for (int y = 0; y < buffer.GetLength(0); y++)
+            {
+                for (int x = 0; x < buffer.GetLength(1); x++)
+                {
+                    buffer[y, x].Clear();
+                    buffer[y, x].Append("__");
+                }
+            }
         }
 
         public void Clear()
         {
-            for (int y = 0; y < screenBuffer.GetLength(0); y++)
-            {
-                for (int x = 0; x < screenBuffer.GetLength(1); x++)
-                {
-                    screenBuffer[y, x].Clear();
-                    screenBuffer[y, x].Append("__");
-                }
-            }
-            outLine.Clear();
+            Clear(currentBuffer);
         }
 
-        public string Render()
+        public void Render()
         {
-            for (int y = 0; y < screenBuffer.GetLength(0); y++)
+            for (int y = 0; y < currentBuffer.GetLength(0); y++)
             {
-                for (int x = 0; x < screenBuffer.GetLength(1); x++)
+                for (int x = 0; x < currentBuffer.GetLength(1) * 2; x += 2)
                 {
-                    _ = outLine.Append(screenBuffer[y, x]);
+                    if (firstBuffer[y, x / 2].ToString() != secondBuffer[y, x / 2].ToString())
+                    {
+                        WriteAt(currentBuffer[y, x / 2].ToString()[0].ToString(), x, y);
+                        WriteAt(currentBuffer[y, x / 2].ToString()[1].ToString(), x + 1, y);
+                    }
                 }
-                outLine.Append("\n");
             }
 
-            return outLine.ToString();
+            currentBuffer = currentBuffer == firstBuffer ? secondBuffer : firstBuffer;
+        }
+
+        protected static void WriteAt(string s, int x, int y)
+        {
+            try
+            {
+                Console.SetCursorPosition(x, y);
+                Console.Write(s, Console.CursorVisible);
+                Console.SetCursorPosition(64, 32);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+            }
         }
 
         public void DrawTextAt(string text, int x, int y)
@@ -72,8 +106,8 @@ namespace SimpleRPG.Core
         {
             CheckCoordinatesAvalability(x, y);
 
-            screenBuffer[y, x].Clear();
-            screenBuffer[y, x].Append(element);
+            currentBuffer[y, x].Clear();
+            currentBuffer[y, x].Append(element);
         }
 
         public void DrawAreaAt(string[,] area, int x, int y)
@@ -104,8 +138,8 @@ namespace SimpleRPG.Core
 
         private void CheckCoordinatesAvalability(int x, int y)
         {
-            if (x > screenBuffer.GetLength(1) ||
-                y > screenBuffer.GetLength(0) ||
+            if (x > currentBuffer.GetLength(1) ||
+                y > currentBuffer.GetLength(0) ||
                 x < 0 || y < 0)
             {
                 throw new IndexOutOfRangeException("Area coordinates out of screen buffer limits.");
@@ -114,8 +148,8 @@ namespace SimpleRPG.Core
 
         private void CheckAreaAvalability(string[,] area, int x, int y)
         {
-            if (x + area.GetLength(1) > screenBuffer.GetLength(1) ||
-                y + area.GetLength(0) > screenBuffer.GetLength(0))
+            if (x + area.GetLength(1) > currentBuffer.GetLength(1) ||
+                y + area.GetLength(0) > currentBuffer.GetLength(0))
             {
                 throw new IndexOutOfRangeException("The area is outside the screen buffer.");
             }
@@ -123,7 +157,7 @@ namespace SimpleRPG.Core
 
         private void CheckAreaAvalability(string[] area, int x, int y)
         {
-            if (x + area.Length > screenBuffer.GetLength(1))
+            if (x + area.Length > currentBuffer.GetLength(1))
             {
                 throw new IndexOutOfRangeException("The area is outside the screen buffer.");
             }

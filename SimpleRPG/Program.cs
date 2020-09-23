@@ -34,7 +34,7 @@ namespace SimpleRPG
             ConsoleKey input;
 
 
-            while ((input = Console.ReadKey().Key) != ConsoleKey.Q)
+            while ((input = Console.ReadKey(true).Key) != ConsoleKey.Q)
             {
                 mainWorld.player.Step(input);
 
@@ -45,8 +45,7 @@ namespace SimpleRPG
                 mainBuffer.DrawTextAt("Position X: " + mainWorld.player.GetPosition().X, 35, 3);
                 mainBuffer.DrawTextAt("Position Y: " + mainWorld.player.GetPosition().Y, 35, 4);
 
-                Console.Clear();
-                Console.WriteLine(mainBuffer.Render()); ;
+                mainBuffer.Render();
             }
         }
     }
