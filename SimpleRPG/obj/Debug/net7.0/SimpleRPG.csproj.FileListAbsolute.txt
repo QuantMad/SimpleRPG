@@ -1,0 +1,14 @@
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\bin\Debug\net7.0\SimpleRPG.exe
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\bin\Debug\net7.0\SimpleRPG.deps.json
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\bin\Debug\net7.0\SimpleRPG.runtimeconfig.json
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\bin\Debug\net7.0\SimpleRPG.dll
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\bin\Debug\net7.0\SimpleRPG.pdb
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.AssemblyInfoInputs.cache
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.AssemblyInfo.cs
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.csproj.CoreCompileInputs.cache
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.dll
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\refint\SimpleRPG.dll
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.pdb
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\SimpleRPG.genruntimeconfig.cache
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\net7.0\ref\SimpleRPG.dll

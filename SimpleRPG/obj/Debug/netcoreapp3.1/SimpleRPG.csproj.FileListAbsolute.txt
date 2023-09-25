@@ -17,10 +17,10 @@ C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\bin\Debug\netcoreapp3.1\Simpl
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\bin\Debug\netcoreapp3.1\SimpleRPG.runtimeconfig.dev.json
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\bin\Debug\netcoreapp3.1\SimpleRPG.dll
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\bin\Debug\netcoreapp3.1\SimpleRPG.pdb
-C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.csprojAssemblyReference.cache
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.AssemblyInfoInputs.cache
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.AssemblyInfo.cs
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.csproj.CoreCompileInputs.cache
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.dll
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.pdb
 C:\Users\quantmad\source\repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.genruntimeconfig.cache
+C:\Users\quantmad\Source\Repos\SimpleRPG\SimpleRPG\obj\Debug\netcoreapp3.1\SimpleRPG.GeneratedMSBuildEditorConfig.editorconfig

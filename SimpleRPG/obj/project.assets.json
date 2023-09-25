@@ -1,11 +1,11 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    "net7.0": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    "net7.0": []
   },
   "packageFolders": {
     "C:\\Users\\quantmad\\.nuget\\packages\\": {}
@@ -13,25 +13,26 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\quantmad\\source\\repos\\SimpleRPG\\SimpleRPG\\SimpleRPG.csproj",
+      "projectUniqueName": "C:\\Users\\quantmad\\Source\\Repos\\SimpleRPG\\SimpleRPG\\SimpleRPG.csproj",
       "projectName": "SimpleRPG",
-      "projectPath": "C:\\Users\\quantmad\\source\\repos\\SimpleRPG\\SimpleRPG\\SimpleRPG.csproj",
+      "projectPath": "C:\\Users\\quantmad\\Source\\Repos\\SimpleRPG\\SimpleRPG\\SimpleRPG.csproj",
       "packagesPath": "C:\\Users\\quantmad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\quantmad\\source\\repos\\SimpleRPG\\SimpleRPG\\obj\\",
+      "outputPath": "C:\\Users\\quantmad\\Source\\Repos\\SimpleRPG\\SimpleRPG\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\quantmad\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "netcoreapp3.1"
+        "net7.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "net7.0": {
+          "targetAlias": "net7.0",
           "projectReferences": {}
         }
       },
@@ -42,14 +43,16 @@
       }
     },
     "frameworks": {
-      "netcoreapp3.1": {
+      "net7.0": {
+        "targetAlias": "net7.0",
         "imports": [
           "net461",
           "net462",
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -58,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
